@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Aclonica&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nobile:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
 .font-aclonica {
   font-family: "Aclonica", sans-serif;
 }
@@ -13,4 +14,128 @@ body, html {
   right: 5px;
   position: absolute;
   bottom: 10%;
+}
+
+/* Google font Nobile */
+/* Main variables::: */
+:root {
+  --grey:#e5e5e5;
+  --darkblue:#14213d;
+  --orange:#fca311;
+  --black:#000000;
+  --white:#ffffff;
+  --mobile-size: 425px;
+  --tablet-size:768px;
+  --laptop-size:1440px;
+}
+
+/* Body */
+body {
+  font-family: "Nobile", sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* Main Styling */
+/* Navbar */
+.navbar {
+  background-color: var(--darkblue) !important;
+  border-top: 3px solid var(--orange);
+  border-bottom: 3px solid var(--orange);
+}
+
+.navbar .navbar-brand h1 {
+  color: var(--grey);
+  font-size: 1.6rem !important;
+}
+
+.navbar .nav-link,
+.navbar .icon {
+  color: var(--grey);
+}
+
+.navbar .nav-link:hover,
+.navbar .icon:hover {
+  color: var(--white);
+}
+
+.navbar .icon {
+  position: relative;
+}
+
+.navbar .icon::after {
+  content: "";
+  position: absolute;
+  top: -5;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--orange);
+  border-radius: 50%;
+}
+
+/* End of navbar */
+/* Sidebar */
+.max-view {
+  height: 100vh;
+}
+
+.right-padding {
+  padding-right: 0;
+}
+
+.sidebar {
+  background-color: var(--darkblue);
+  padding-left: 0px !important;
+}
+
+.sidebar .nav-link,
+.sidebar .navbar-brand {
+  width: 100%;
+  padding-left: 1rem;
+  color: var(--white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link:hover,
+.sidebar .navbar-brand:hover {
+  color: var(--grey);
+  font-size: 1.2rem;
+}
+
+/* **************  Card Selector  ************** */
+.inform-card .card-1 {
+  background-color: #073B4C;
+  color: var(--white);
+}
+
+.inform-card .card-2 {
+  background-color: #06D6A0;
+  color: var(--white);
+}
+
+.inform-card .card-3 {
+  background-color: #118AB2;
+  color: var(--white);
+}
+
+.inform-card .card-4 {
+  background-color: #FFD166;
+  color: var(--white);
+}
+
+.inform-card .card .body-icon {
+  font-size: 34px;
+  transform: rotate(315deg);
+  color: var(--white);
+  margin-left: 10px !important;
+}
+
+.inform-card .card .card-footer {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.fn-18 {
+  font-size: 1.575rem !important;
 }

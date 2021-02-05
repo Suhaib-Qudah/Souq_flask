@@ -70,4 +70,7 @@ def create_app(test_config=None):
     from .blueprints.login import login_bp
     app.register_blueprint(login_bp)
 
+    from .blueprints.dashboard import dashboard_bp
+    app.register_blueprint(dashboard_bp)
+ 
     return app

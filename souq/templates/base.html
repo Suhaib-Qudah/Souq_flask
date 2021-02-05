@@ -27,12 +27,11 @@
         <!-- Logo -->
         <a class="navbar-brand text-white font-aclonica" href="{{url_for('item.index')}}">MySouq</a>
         <!-- Burger Menu Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-ellipsis-v text-white"></i>
+                </button>
       <!-- Start Navbar -->
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
       <!-- Left Side of Menu -->
 
@@ -44,23 +43,32 @@
           <a class="nav-link text-white text-uppercase" aria-current="page" href="{{url_for('item.trending')}}">Trending</a>
         </li>
       </ul>
-
+<!-- Left sidebar -->
       <div class="ml-auto mr-5">
-
-        <ul class="navbar-nav ">
+        <ul class="navbar-nav">
           {%if session['user'] %}
-          <li><a class="nav-link text-white text-uppercase" href="{{url_for('user.view_user',id=session['user']['id'])}}"><i
-            class="fas fa-user-circle"></i>
-          Profile</a></li>
-          <li><a class="nav-link text-white text-uppercase" href="{{url_for('user.card')}}"><i
-            class="fas fa-cart-plus"></i>
-          Card</a></li>
-      <li><a class="nav-link text-white text-uppercase" href="{{url_for('user.change_password')}}"><i class="fas fa-unlock-alt"></i>
-          Change Password</a></li>
-      <li>
-      </li>
-      <li><a class="nav-link text-white text-uppercase" href="{{url_for('login.logout')}}"> <i class="fas fa-sign-out-alt"></i>
-          Logout</a></li>
+           <li class="nav-item dropdown mr-5">
+
+            <a class="nav-link dropdown-toggle text-white mr-5" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{session['user']['username']}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item text-uppercase" href="{{url_for('dashboard.home')}}">
+                <i class="fas fa-chart-line"></i>
+              Dashboard</a>
+              <a class="dropdown-item text-uppercase" href="{{url_for('user.view_user',id=session['user']['id'])}}"><i
+                class="fas fa-user-circle"></i>
+              Profile</a>
+              <a class="dropdown-item text-uppercase" href="{{url_for('user.card')}}">
+                <i class="fas fa-cart-plus"></i>Card</a>
+                <a class="dropdown-item text-uppercase" href="{{url_for('user.change_password')}}"><i class="fas fa-unlock-alt"></i>
+                  Change Password</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-uppercase" href="{{url_for('login.logout')}}"> 
+                <i class="fas fa-sign-out-alt"></i>Logout</a>    
+              </div>
+          </li>
+      
       {% else %}
       <li class="nav-item">
         <a class="nav-link text-white" aria-current="page" href="{{url_for('user.register')}}">Sign Up</a>
@@ -130,13 +138,10 @@
     </div>
   </footer>
 
-  <!-- importing our scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-    integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
-    integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
-    crossorigin="anonymous"></script>
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>
 
 </html>
