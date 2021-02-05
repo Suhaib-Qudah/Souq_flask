@@ -1,9 +1,15 @@
 from flask_wtf import FlaskForm
+from flask import *
 from mongoengine.fields import DateField, DateTimeField
-from wtforms import StringField, PasswordField, SubmitField, BooleanField,TextAreaField,DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import *
+from wtforms.validators import *
 import email_validator
 
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 class EditUserForm(FlaskForm):
     username=StringField("Enter your username",validators=[ Length(min=2, max=20),DataRequired()])
@@ -27,6 +33,7 @@ class Registerion(FlaskForm):
     first_name = StringField("Enter your first name",validators=[DataRequired(),Length(min=2, max=20)])
     last_name = StringField("Enter your last name",validators=[DataRequired(),Length(min=2, max=20)])
     biography = TextAreaField("Enter your biography",validators=[DataRequired(),Length(min=50, max=250)])
+    image = FileField("Browse for an image")
     submit=SubmitField("Add User")
 
 

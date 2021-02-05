@@ -3,14 +3,15 @@ from souq.models import User, Card
 # from souq.models import TextUser
 from souq.forms import EditUserForm, Registerion, ChangePasswordForm
 from flask_hashing import Hashing
+from werkzeug.utils import *
+import os
 
 
 app = Flask(__name__)
 hashing = Hashing(app)
 # define our blueprint
 user_bp = Blueprint('user', __name__)
-
-
+app.config['media_path'] = '/media/suhaib/Suhaib/test/souq/static'
 
 @user_bp.route('/registration', methods=['GET', 'POST'])
 def register():
@@ -21,6 +22,13 @@ def register():
         # create user object
         user = User()
         # set object attributes and create new user in database
+        if register.image.data:
+            image = register.image.data
+            filename = secure_filename(image.filename)
+            path = image.save(os.path.join(
+            app.config['media_path'], 'photos', register.username.data+'.'+filename.split('.')[1]))
+            print(path)
+            user.profile_image = register.username.data+'.'+filename.split('.')[1]
         user.username = register.username.data
         user.email = register.email.data
         user.birthday = register.birthday.data
@@ -70,7 +78,7 @@ def edit_user(id):
         return redirect(url_for('user.view_user' , id=session['user']['id']))
 
 
-    # redner the login template
+    # render the login template
     return render_template("user/edit.html", form=edit_user_form,user=user)
 
 

@@ -176,7 +176,7 @@ def buy():
             card_item.save()
 
         
-        return 'true'
+        return render_template('user/thanks.html')
 
 
 @item_bp.route('/card/delete-item/<card_item_id>')

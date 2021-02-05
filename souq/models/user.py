@@ -1,5 +1,5 @@
 from mongoengine import *
-from mongoengine.fields import StringField
+from mongoengine.fields import *
 from datetime import datetime
 
 
@@ -9,6 +9,7 @@ class User(Document):
 
     # define class fields
     username = StringField(required=True,unique=True)
+    profile_image = StringField()
     birthday = DateTimeField(required=True) 
     email= StringField(required=True,max_length=250)
     status = StringField(default='user')
@@ -40,6 +41,8 @@ class User(Document):
             'last_name': self.last_name,
             'biography': self.biography,
             'status':self.status,
+            'profile':self.profile_image,
+
                     }
         return serialized
     
