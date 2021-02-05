@@ -1,0 +1,111 @@
+{% extends 'dashboard.html' %}
+{%block main%}
+
+<div class="row mb-5">
+    <div class="col">
+        <h3><span class="text-dark text-uppercase">Dashboard/</span><span class="text-muted small"> My Dashboard</span></h3>
+    </div>
+</div>
+<div class="row mt-2 inform-card">
+    <div class="col-lg-3 col-md-6 col-10 mx-auto my-3">
+        <!-- Card start -->
+        <div class="card card-1">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="flex d-flex justify-content-between">
+                    <i class="fa fa-home body-icon"></i>
+                    <div class="side-text align-content-between">
+                        <h3>{{items}}</h3>
+                        <h5>Product</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- End of card body -->
+            <!-- Card footer -->
+            <div class="card-footer d-flex justify-content-between">
+                <a href="#" class="text-white">Read More</a>
+                <i class="fa fa-sync mt-2"></i>
+            </div>
+            <!-- End of card footer -->
+        </div>
+    </div>
+    <!-- End of column 1 -->
+
+    <div class="col-lg-3 col-md-6 col-10 mx-auto my-3">
+        <!-- Card start -->
+        <div class="card card-2">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="flex d-flex justify-content-between">
+                    <i class="fa fa-users body-icon"></i>
+                    <div class="side-text align-content-between">
+                        <h2>{{users}}</h2>
+                        <h5>Users</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- End of card body -->
+            <!-- Card footer -->
+            <div class="card-footer d-flex justify-content-between">
+                <a href="#" class="text-white">Read More</a>
+                <i class="fa fa-sync mt-2"></i>
+            </div>
+            <!-- End of card footer -->
+        </div>
+    </div>
+    <!-- End of column 2 -->
+
+
+    <div class="col-lg-3 col-md-6 col-10 mx-auto my-3">
+        <!-- Card start -->
+        <div class="card card-3">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="flex d-flex justify-content-between">
+                    <i class="fa fa-envelope body-icon"></i>
+                    <div class="side-text align-content-between">
+                        <h3>200 News</h3>
+                        <h5>Mails</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- End of card body -->
+            <!-- Card footer -->
+            <div class="card-footer d-flex justify-content-between">
+                <a href="#" class="text-white">Read More</a>
+                <i class="fa fa-sync mt-2"></i>
+            </div>
+            <!-- End of card footer -->
+        </div>
+    </div>
+    <!-- End of column 3  -->
+
+
+    <div class="col-lg-3 col-md-6 col-10 mx-auto my-3">
+        <!-- Card start -->
+        <div class="card card-4">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="flex d-flex justify-content-between">
+                    <i class="fa fa-suitcase body-icon"></i>
+                    <div class="side-text align-content-between">
+                        <h3>200 News</h3>
+                        <h5>Orders</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- End of card body -->
+            <!-- Card footer -->
+            <div class="card-footer d-flex justify-content-between">
+                <a href="#" class="text-white">Read More</a>
+                <i class="fa fa-sync mt-2"></i>
+            </div>
+            <!-- End of card footer -->
+        </div>
+    </div>
+    <!-- End of column 4 -->
+
+
+</div>
+
+{%endblock%}

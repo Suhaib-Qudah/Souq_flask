@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{%block title%}Dashboard{%endblock%}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome5  -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <!-- Main Css -->
+    {% assets "scss_all" %}
+    <link rel='stylesheet' type='text/css' href="{{ ASSET_URL }}">
+    {% endassets %}  </head>
+  <body>
+      <!-- Navbar Start -->
+      <nav class="navbar navbar-expand-md">
+          <div class="container-fluid">
+              <!-- brand -->
+              <a href="#" class="navbar-brand text-uppercase">
+                  <h1>Admin DashBoard</h1>
+              </a>
+              <!-- Collapse button -->
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <!-- Collapse Div Links -->
+              <div class="collapse navbar-collapse justify-content-end" id="myNavbar">
+                  <ul class="navbar-nav links d-md-none">
+                      <li class="nav-item">
+                          <a href="" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="" class="nav-link"><i class="fa fa-list text-muted mr-3"></i>App</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link"><i class="fa fa-envelope text-muted mr-3"></i>Mailbox</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link"><i class="fa fa-desktop text-muted mr-3"></i>UI Elements</a>
+                    </li>
+                  </ul>
+                  <ul class="navbar-nav icons">
+                      <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-search"></i></a></li>
+                      <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-bell icon"></i></a></li>
+                      <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-comment icon"></i></a></li>
+                      <li class="nav-item mr-5"><a href="#" class="nav-link">
+                          <img src="{{url_for('static',filename='photos/default_avatar.png')}}" alt="profile image" width="30px" class="img-fluid rounded-circle img-thumbnail">
+                      </a></li>
+                      <li class="nav-item mr-4">
+                          <a href="#" class="nav-link" data-toggle="modal" data-target="#sign-out"><i class="fa fa-sign-out-alt"></i><span class="d-lg-inline d-md-none"> Sign Out</span></a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+      <!-- End Of Navbar -->
+
+      <!-- Main Content -->
+      <div class="container-fluid">
+        <div class="row">
+      <!-- Sidebar Start -->
+            <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar right-padding max-view py-5">
+                <a href="#" class="navbar-brand mb-5 border-0 text-center">
+                    {% if session['user']['profile'] %}
+                    <img src="{{url_for('static',filename='photos/'+session['user']['profile'])}}" alt="profile image" style="width: 100px !important; height: 100px !important; "class="img-fluid rounded-circle">
+                    {%else%}
+                    <img src="{{url_for('static',filename='photos/default_avatar.png')}}" alt="profile image" width="50px" class="img-fluid rounded-circle img-thumbnail">
+                    {% endif%}
+                    
+                    {{session['user']['username']}}
+                </a>
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item">
+                        <a href="{{url_for('dashboard.home')}}" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
+                    </li>
+                    {% if session['user']%}
+                         {% if session['user']['status']=='seller' or session['user']['status']=='admin' %}
+                    <li class="nav-item">
+                          <a class="nav-link" href="{{url_for('item.add_item')}}"><i class="fa fa-list text-muted mr-3"></i>Add item</a>
+                  </li>
+                  {%endif%}
+                        {%endif%}
+                  <li class="nav-item">
+                      <a href="" class="nav-link"><i class="fa fa-envelope text-muted mr-3"></i>Mailbox</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="" class="nav-link"><i class="fa fa-desktop text-muted mr-3"></i>UI Elements</a>
+                  </li>
+                </ul>
+                <h6 class="text-muted pl-3 pt-3">
+                    Forms and tables 
+                </h6>
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item">
+                        <a href="" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="" class="nav-link"><i class="fa fa-list text-muted mr-3"></i>App</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="" class="nav-link"><i class="fa fa-envelope text-muted mr-3"></i>Mailbox</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="" class="nav-link"><i class="fa fa-desktop text-muted mr-3"></i>UI Elements</a>
+                  </li>
+                </ul>
+            </nav>
+      <!-- Sidebar End -->
+
+
+      <!-- Chart Content -->
+      <div class="col-md-9 col-lg-10 bg-light py-5">
+          <div class="row">
+              <div class="col">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-success mt-5" role="alert">
+                  <strong>{{message}}</strong>
+                  <button type="button" class="btn float-right btn-danger btn-flash" data-bs-dismiss="alert" aria-label="Close">X</button>
+                </div>
+                {% endfor %}
+              </div>
+          </div>
+        {% block main%}
+        {% endblock%}
+        <!-- End of inform card row -->
+      </div>
+        </div>
+      </div>
+      <!-- Main Content End -->
+
+      <!-- Modal of sign out -->
+      <div class="modal fade" id="sign-out">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                      <h4 class="modal-title">
+                          Already want to leave?
+                      </h4>
+                      <button class="close" type="button" data-dismiss="modal">time;</button>
+                  </div>
+                  <!-- End of Modal Header -->
+                  <!-- Modal Body -->
+                  <div class="modal-body">
+                      It's sad to see you go. Please press Logout to leave  
+                  </div>
+                  <!-- End of Modal Body -->
+                  <!-- Modal Footer -->
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">Stay With US</button>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Leave</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename ='main.js')}}"></script>
+  </body>
+</html>
