@@ -8,25 +8,31 @@
   <div class="card bg-light px-0 mb-5">
     <div class="card-header mb-4">
       <!-- Username -->
-      <h3 class="card-tille"><strong>{{user.username}}</strong></h3>
+      {% if session['user']['profile'] %}
+                    <img src="{{url_for('static',filename='photos/'+session['user']['profile'])}}" alt="profile image" style="width: 100px !important; height: 100px !important; float: right;" class="img-fluid img-thumbnail">
+                    {%else%}
+                    <img src="{{url_for('static',filename='photos/default_avatar.png')}}" alt="profile image" style="width: 100px !important; height: 100px !important; float: right;" class="img-fluid img-thumbnail">
+                    {% endif%}
 
+      <h3 class="card-tille mt-3"><strong>{{user.username}}</strong></h3>
+      <h6 class="text-muted">Joined at: {{user.created_at.strftime('%Y-%m-%d')}}</h6>
     </div>
     <!-- Content about this user -->
     <div class="card-body px-3">
       
       {% if user.first_name and user.last_name%}
-      <p class="text-justify border-bottom">
-        Name : <span>{{user.first_name}}</span><span> {{user.last_name}}</span>
+      <p class="text-justify border-bottom mb-5">
+        <strong>Name : </strong><span>{{user.first_name}}</span><span> {{user.last_name}}</span>
       </p>
       {% endif %}
       {% if user.biography %}
-      <p class="text-justify border-bottom">
-        Biography: {{user.biography}}
+      <p class="text-justify border-bottom mb-5">
+        <strong>Biography:</strong> {{user.biography}}
       </p>
       {% endif %}
       {% if user.birthday %}
-      <p class="text-justify border-bottom">
-        Birthday : {{user.birthday.strftime('%Y-%m-%d') }}
+      <p class="text-justify border-bottom mb-5">
+        <strong>Birthday : </strong>{{user.birthday.strftime('%Y-%m-%d') }}
       </p>
       {% endif %}
 
@@ -35,4 +41,71 @@
     </div>
 
   </div>
+
+  <section>
+
+    <div class="container-fluid text-center my-3">
+      <h2>Our Certifications</h2>
+      <div class="row mx-auto my-auto">
+          <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+              <div class="carousel-inner w-100" role="listbox">  
+                  {% for item in items%}
+                  <div class="carousel-item {{ 'active' if loop.index == 1 else '' }}">
+                    <div class="d-block col-3 px-2"><div class="card">
+                      <div class="card-header"><div class="card-title">
+                        {{item.title}}
+                      </div></div>
+                      <div class="card-body">
+                        <p class="card-text">{{ item['content']|truncate(40, True) }}</p>
+                        <p class="card-text">{{ item['created'] }}</p>
+                
+                        <a href="{{url_for('item.view_item', item_id = item.id)}}" class="card-link">View item</a>
+                        <a href="{{url_for('item.add_item_to_card', item_id = item.id)}}" class="btn btn-dark d-block w-100 rounded-0 mt-5">Add to card</a>
+                      </div>
+                    </div></div>
+                  </div>
+                  {% endfor %}
+              </div>
+              <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#recipeCarousel" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+              </a>
+          </div>
+      </div>
+  </div>
+  
+  </section>
+
 {% endblock %}
+{% block script%}
+<script>
+  $( document ).ready(function() {
+ 
+  $('#recipeCarousel').carousel({
+  interval :2000
+})
+
+$('.carousel .carousel-item').each(function(){
+  var next = $(this).next();
+  if (!next.length) {
+  next = $(this).siblings(':first');
+  }
+  next.children(':first-child').clone().appendTo($(this));
+  
+  for (var i=0;i<2;i++) {
+      next=next.next();
+      if (!next.length) {
+        next = $(this).siblings(':first');
+      }
+      
+      next.children(':first-child').clone().appendTo($(this));
+    }
+});
+});
+  
+</script>
+{% endblock%}

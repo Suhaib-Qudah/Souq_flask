@@ -1,7 +1,7 @@
 from flask import Flask,Blueprint, render_template, request, redirect, session, flash, url_for
-from souq.models import User, Card
+from souq.models import User, Card, TextItem,Item
 # from souq.models import TextUser
-from souq.forms import EditUserForm, Registerion, ChangePasswordForm
+from souq.forms import *
 from flask_hashing import Hashing
 from werkzeug.utils import *
 import os
@@ -9,10 +9,9 @@ import os
 
 app = Flask(__name__)
 hashing = Hashing(app)
+app.config['media_path'] = '/media/suhaib/Suhaib/test/souq/static'
 # define our blueprint
 user_bp = Blueprint('user', __name__)
-app.config['media_path'] = '/media/suhaib/Suhaib/test/souq/static'
-
 @user_bp.route('/registration', methods=['GET', 'POST'])
 def register():
     # create instance of our form
@@ -24,11 +23,11 @@ def register():
         # set object attributes and create new user in database
         if register.image.data:
             image = register.image.data
-            filename = secure_filename(image.filename)
+            filename = secure_filename( register.username.data+image.filename )
             path = image.save(os.path.join(
-            app.config['media_path'], 'photos', register.username.data+'.'+filename.split('.')[1]))
+            app.config['media_path'], 'photos', filename))
             print(path)
-            user.profile_image = register.username.data+'.'+filename.split('.')[1]
+            user.profile_image = filename
         user.username = register.username.data
         user.email = register.email.data
         user.birthday = register.birthday.data
@@ -41,7 +40,6 @@ def register():
         flash('Thank you to join to our community.')
         return redirect(url_for('item.index'))
     else:
-        print("we here")
         return render_template("user/register.html", form=register,message= "here")
 
         # # another way
@@ -64,6 +62,14 @@ def edit_user(id):
         edit_user_form.birthday.data = user.birthday
     # handle form submission
     if edit_user_form.validate_on_submit():
+        data = edit_user_form.image.data
+        if data is not None:
+            image = edit_user_form.image.data
+            filename = secure_filename( edit_user_form.username.data+image.filename )
+            path = image.save(os.path.join(
+            app.config['media_path'], 'photos', filename))
+            print(path)
+            user.profile_image = filename
         # read post values from the form
         first_name = edit_user_form.first_name.data
         last_name = edit_user_form.last_name.data
@@ -82,15 +88,6 @@ def edit_user(id):
     return render_template("user/edit.html", form=edit_user_form,user=user)
 
 
-@user_bp.route('/users')
-def get_users():
-
-    # get all users
-    users = User.objects
-
-    # render 'list.html' blueprint with users
-    return render_template('user/list.html', users=users)
-
 
 @user_bp.route('/profile/<id>')
 def view_user(id):
@@ -98,7 +95,9 @@ def view_user(id):
     # get user by id
     user = User.objects(id=id).first()
     # render 'profile.html' blueprint with user
-    return render_template('user/view.html', user=user)
+    items = TextItem.objects[:6].order_by('-created_at')
+    print(items)
+    return render_template('user/view.html', user=user , items = items)
 
 
 @user_bp.route('/user/delete/<id>')

@@ -42,6 +42,7 @@ class User(Document):
             'biography': self.biography,
             'status':self.status,
             'profile':self.profile_image,
+            
 
                     }
         return serialized

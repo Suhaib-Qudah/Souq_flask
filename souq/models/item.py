@@ -10,6 +10,7 @@ class Item(Document):
     meta = {'collection': 'items', 'allow_inheritance': True}
     # define class fields
     title = StringField(max_length=120, required=True)
+    image = StringField()
     store_name = ReferenceField(User,reverse_delete_rule=CASCADE)
     tags = ListField(StringField(max_length=30))
     comments = ListField(EmbeddedDocumentField(Comment))

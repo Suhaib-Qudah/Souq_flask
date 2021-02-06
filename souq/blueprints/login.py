@@ -26,12 +26,16 @@ def login():
         user=User.objects(username=username).first()
         # print(str(user.id))
             # check if the user was found and the password matches
-        if (user.username == username) and (user.password == password):
-            session['user'] = user.serialize()
+        if user is not None:
+            if (user.username == username) and (user.password == password):
+              session['user'] = user.serialize()
             # redirect the user after login
-            return redirect(url_for('item.index'))
-        else:
+              return redirect(url_for('item.index'))
+            else:
             # redirect to 404 if the login was invalid
+             flash("Your Username or password is wrong please try again :( .")
+             return render_template("login/login.html", form = login_form)
+        else:
             flash("Your Username or password is wrong please try again :( .")
             return render_template("login/login.html", form = login_form)
             # Render the login template

@@ -18,10 +18,12 @@ class Category(Document):
     add_at = DateTimeField(default=datetime.utcnow)
 
     def get_by_name(cls, name):
-        data = Category.objects.get(name = name)
+        data = Category.objects(name = name).first()
         if data is not None:
             return True
         else:
             return False
+
+   
 
 

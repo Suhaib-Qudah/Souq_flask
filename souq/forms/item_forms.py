@@ -1,6 +1,7 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField,DecimalField ,IntegerField,FloatField
-from wtforms.validators import DataRequired, InputRequired, EqualTo, Length
+from souq.blueprints.dashboard import categories
+from flask_wtf import *
+from wtforms import *
+from wtforms.validators import *
 
 
 class AddItemForm(FlaskForm):
@@ -9,6 +10,8 @@ class AddItemForm(FlaskForm):
     price = FloatField("Enter the price: ", validators=[DataRequired()])
     quantity = IntegerField("Enter the quantity: ", validators=[DataRequired()])
     selling_price = FloatField("Enter the selling price: ",validators=[DataRequired()])
+    image = FileField("Browse for an image")
+    categories = SelectField("Status: ", validators=[DataRequired()])
     submit = SubmitField("Add Item")
 
 

@@ -1,16 +1,10 @@
 
 from flask.helpers import flash
-from souq.blueprints.user import card
-from souq.models.item import Item
-from itertools import count
+from itertools import *
 from flask import Blueprint, render_template, request, session, redirect, url_for
 import datetime
-from souq.models import User, comment, Card, user
-from souq.models import Comment
-
-
-from souq.models import TextItem
-from souq.forms import AddItemForm, EditItemForm , AddCommentForm
+from souq.models import *
+from souq.forms import *
 
 # define our blueprint
 item_bp = Blueprint('item', __name__)
@@ -30,7 +24,11 @@ def index():
 def add_item():
     # create instance of our form
     new_item = AddItemForm()
-
+    categories = Category.objects( status = 'active' )
+    choices = []
+    for cat in categories:       
+        choices.append(cat.name)
+    new_item.categories.choices = choices
     # handle form submission
     if new_item.validate_on_submit():
 

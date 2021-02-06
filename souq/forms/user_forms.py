@@ -19,7 +19,8 @@ class EditUserForm(FlaskForm):
     first_name = StringField("Enter your first name",validators=[DataRequired(),Length(min=2, max=20)])
     last_name = StringField("Enter your last name",validators=[DataRequired(),Length(min=2, max=20)])
     biography = TextAreaField("Enter your biography",validators=[DataRequired(),Length(min=50, max=250)])
-    submit=SubmitField("Add User")
+    image = FileField("Browse for an image")
+    submit=SubmitField("Edit Now")
 
 class Registerion(FlaskForm):
     # Data of new user
