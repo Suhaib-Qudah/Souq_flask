@@ -5,9 +5,13 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 import datetime
 from souq.models import *
 from souq.forms import *
+from werkzeug.utils import *
+import os
 
 # define our blueprint
 item_bp = Blueprint('item', __name__)
+app = Flask(__name__)
+app.config['media_path'] = '/media/suhaib/Suhaib/test/souq/static'
 
 
 @item_bp.route('/')
@@ -26,25 +30,28 @@ def add_item():
     new_item = AddItemForm()
     categories = Category.objects( status = 'active' )
     choices = []
-    for cat in categories:       
-        choices.append(cat.name)
+    for category in categories:       
+        choices.append(category.name)
     new_item.categories.choices = choices
     # handle form submission
     if new_item.validate_on_submit():
-
-        # read item values from the form
-        title = new_item.title.data
-        content = new_item.body.data
-        price = new_item.price.data
-        quantity = new_item.quantity.data
-        selling_price = new_item.selling_price.data
         # create instance of Textitem
-        item = TextItem(title=title,
-                     content=content,
-                     store_name = session['user']['id'],
-                     price = price,
-                     quantity = quantity,
-                     selling_price=selling_price)
+        item = TextItem()
+        if new_item.image.data:
+            image = new_item.image.data
+            print(image)
+            filename = secure_filename( session['user']['username']+new_item.title.data+image.filename )
+            path = image.save(os.path.join(
+            app.config['media_path'], 'images', filename))
+            print(path)
+            item.image = filename
+        # read item values from the form
+        item.title = new_item.title.data
+        item.content = new_item.body.data
+        item.price = new_item.price.data
+        item.quantity = new_item.quantity.data
+        item.selling_price = new_item.selling_price.data
+        item.category= new_item.categories.data
         item.tags = ["flask", "python", "mongo"]
         item.save()
 

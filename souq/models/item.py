@@ -1,6 +1,6 @@
+from souq.models import category
 from mongoengine import *
-from mongoengine.fields import DateField
-from wtforms.validators import Required
+from mongoengine.fields import *
 from .comment import Comment
 from .user import User
 from datetime import datetime
@@ -18,6 +18,7 @@ class Item(Document):
     price = FloatField(required = True)
     quantity= IntField(required = True)
     selling_price = FloatField(required = True)
+    category = StringField()
 
     def get_by_item(cls, item_id):
         data = Item.objects.get(id = str(item_id))

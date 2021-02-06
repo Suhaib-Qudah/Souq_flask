@@ -5,12 +5,6 @@ from wtforms import *
 from wtforms.validators import *
 import email_validator
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 class EditUserForm(FlaskForm):
     username=StringField("Enter your username",validators=[ Length(min=2, max=20),DataRequired()])
     email= StringField("Email",validators=[DataRequired(),Email('Please enter your email correctly')])
