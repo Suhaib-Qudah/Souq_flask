@@ -1,0 +1,52 @@
+{% extends 'dashboard.html' %}
+{%block main%}
+    <div class="row">
+        <div class="col">
+            <h1>Dashboard /Pending</h1>
+        </div>
+    </div>
+    <div class="row my-5">
+        <!-- <div class="col p-3">
+                <h1>hello</h1>
+        </div> -->
+
+{% if items%}
+{% for item in items %}
+<div class="col-lg-3 col-md-6 col-sm-12">
+
+  <!-- item card -->
+  <div class="card bg-light mb-3">
+
+      {% if item.image %}
+      <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/'+item.image)}}" alt="Card image cap">
+      {%else%}
+      <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/defaultproduct.jpg')}}" alt="Card image cap">
+      {% endif %}
+    <!-- card header -->
+    <div class="card-header">
+      <h5 class="card-title">{{ item.item_name }}</h5>
+      <h5>Status: {{item.status}}</h5>
+    </div>
+
+    <!-- card body -->
+    <div class="card-body">
+      <p class="card-text">{{ item.user.username }}</p>
+      <p class="card-text">Since: {{ item.add_at.strftime('%Y-%m-%d') }}</p>
+
+      <a href="{{url_for('item.view_item', item_id = item.item_id)}}" class="card-link">View item</a>
+      <a href="{{url_for('item.accept_item', id = item.id)}}" class="btn btn-secondary d-block w-100 rounded-0 mt-5">Accept</a>
+    </div>
+  </div>
+</div>
+
+{%endfor%}
+{% else %}
+    <div class="col-md-12">
+        <div class="alert alert-info text-center mx-auto">
+            <h2>No Pending Request</h2>
+        </div>
+    </div>
+{% endif %}
+</div>
+
+{% endblock%}
