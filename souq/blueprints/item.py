@@ -7,6 +7,8 @@ from souq.models import *
 from souq.forms import *
 from werkzeug.utils import *
 import os
+from mongoengine.queryset.visitor import Q
+
 
 # define our blueprint
 item_bp = Blueprint('item', __name__)
@@ -14,14 +16,26 @@ app = Flask(__name__)
 app.config['media_path'] = '/media/suhaib/Suhaib/test/souq/static'
 
 
-@item_bp.route('/')
-@item_bp.route('/items')
+@item_bp.route('/', methods=['post','get'])
+@item_bp.route('/items', methods=['post','get'])
 def index():
+    form = CategoryFilters()
+    categories = Category.objects( status = 'active' )
+    choices = []
+    for category in categories:       
+        choices.append(category.name)
+    form.categories.choices = choices
+    #to do when user try to filter by category 
+    if request.method == "POST" and form.validate:
+            items = Item.objects( category = form.categories.data).order_by('-created_at')
+            message= (f'{items.count()} items were found in our store')
+            flash(message)
+            return render_template('item/items.html', items=items, title='Latest items',form=form)
+
     # get all items
-    items = TextItem.objects()
-    
+    items = TextItem.objects().order_by('-created_at')
     # render 'souq' blueprint with items
-    return render_template('item/items.html', items=items)
+    return render_template('item/items.html', items=items, title='Leatest items',form=form)
 
 
 @item_bp.route('/item/add', methods=['GET', 'POST'])
@@ -36,7 +50,7 @@ def add_item():
     # handle form submission
     if new_item.validate_on_submit():
         # create instance of Textitem
-        item = TextItem()
+        item = TextItem(store_name = session['user']['id'])
         if new_item.image.data:
             image = new_item.image.data
             print(image)
@@ -46,6 +60,7 @@ def add_item():
             print(path)
             item.image = filename
         # read item values from the form
+
         item.title = new_item.title.data
         item.content = new_item.body.data
         item.price = new_item.price.data
@@ -115,9 +130,7 @@ def view_item(item_id):
         
         return render_template('item/view.html', item=item ,form=add_comment_form)
         
-
     # get item
-
 
     # render the view
     return render_template('item/view.html', item=item,form=add_comment_form)
@@ -149,20 +162,11 @@ def delete_comment(item_id,content):
     return redirect(url_for('item.index'))
 
 
-@item_bp.route('/trending')
-def trending():
-    # get all items
-    items = TextItem.objects.order_by('-comments')
-    items.count()
-    print(items)
-    # render 'souq' blueprint with items
-    return render_template('item/items.html', items=items, title='Trending items')
-
 
 @item_bp.route('/additem/<item_id>' , methods=['GET', 'POST'] )
 def add_item_to_card(item_id):
         item = Item.objects(id = item_id).first()
-        card = Card(user = session['user']['id'],item_id = str(item.id),item_name = item.title)
+        card = Card(user = session['user']['id'],item_id = str(item.id),item_name = item.title,store_name=str(item.store_name.id))
         card.save()
         #Flash massage to let user now that item added
         flash("Item Added successfully to your card")
@@ -171,18 +175,24 @@ def add_item_to_card(item_id):
 
 @item_bp.route('/buy' , methods=['GET', 'POST'] )
 def buy():
-        my_card = Card.objects(user=session['user']['id'], status= "False")
-        for card_item in my_card: 
-            card_item.status = "True"
-            # Get item in item collection to check the card
-            item = Item.objects(id = card_item.item_id).first()
-            item.quantity -=1
-            item.save()
-            card_item.save()
+    if session:
+                my_card = Card.objects(user=session['user']['id'], status= "False")
+                for card_item in my_card: 
+                    card_item.status = "Pending"
+                      # Get item in item collection to check the card
+                    card_item.save()
 
         
-        return render_template('user/thanks.html')
+                return render_template('user/thanks.html')
+    else:
+         flash("Sorry,  you don't authorize to do this action :'( ")
+         return redirect(url_for('item.index'))
+    
 
+@item_bp.route('/pending')
+def pending():
+    items = Card.objects().filter(Q(status='Pending') & Q(store_name = str(session['user']['id'])))
+    return render_template('dashboard/pending.html',items= items)
 
 @item_bp.route('/card/delete-item/<card_item_id>')
 def delete_item_from_card(card_item_id):
@@ -192,3 +202,16 @@ def delete_item_from_card(card_item_id):
     flash("Item removed successfully from your card")
     # render the view
     return redirect(url_for('user.card'))
+
+
+@item_bp.route('/card/accept-item/<id>')
+def accept_item(id):
+    card = Card.objects(id = id).first()
+    card.status = 'Accept'
+    card.save() 
+    item = Item.objects(id = card.item_id).first()
+    item.quantity -=1
+    item.save()
+    flash("Item Accepted successfully ")
+    # render the view
+    return redirect(url_for('item.pending'))

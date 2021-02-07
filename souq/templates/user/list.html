@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'dashboard.html' %}
 
 <!-- header block -->
 {% block header %}
@@ -9,19 +9,21 @@
 {% block main %}
 <div class="row my-5">
   {% for user in users %}
-<div class="col-md-3 col-sm-12">
+<div class="col-md-6 col-sm-12 p-3" >
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">
     {{user.username}}
       </h3>
     </div>
-    <div class="card-body text-center">
-     <p>  {{user.first_name}}</p>
-     <p>  {{user.last_name}}</p>
+    <div class="card-body">
+     <h4>Status: {{user.status}}</h4>
+     <p>  {{user.biography}}</p>
     </div>
     <div class="card-footer">
-      <a class="btn btn-secondary my-3" href="{{ url_for('user.view_user',id = user._id) }}">View User</a>
+      <a class="btn btn-success my-3" href="{{ url_for('dashboard.create_seller',id = user.id) }}">Change to seller now</a>
+      <a class="btn btn-secondary my-3" href="{{ url_for('user.view_user',id = user.id) }}">View User</a>
+      <a class="btn btn-danger my-3" href="{{ url_for('dashboard.delete_user',id = user.id) }}">Delete User</a>
     </div>
     </div>
 </div>
@@ -29,6 +31,5 @@
 
 {% endfor %} 
 </div>
-<a class="btn btn-primary my-3" href="{{ url_for('user.add_user') }}" role="button" >Add User</a>
 
 {% endblock %}

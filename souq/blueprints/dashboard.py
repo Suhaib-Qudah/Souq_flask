@@ -1,6 +1,5 @@
-from flask.helpers import flash
 from itertools import count
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for,flash
 from souq.forms import AddCategory
 from souq.models import *
 
@@ -53,11 +52,38 @@ def categories():
         return render_template('item/items.html', items=items)
 
 
-@dashboard_bp.route('/users')
-def get_users():
+@dashboard_bp.route('/dashboard/users')
+def users():
 
-    # get all users
-    users = User.objects
+   if session:
+       if session['user']['status'] == 'admin':
+            # get all users
+                users = User.objects()
+                # render 'list.html' blueprint with users
+                return render_template('user/list.html', users=users)
+       else:
+            flash("Sorry, You are not authorize to go to this page")
+            return redirect(url_for('dashboard.home'))
 
-    # render 'list.html' blueprint with users
-    return render_template('user/list.html', users=users)
+
+
+@dashboard_bp.route('/makeseller/<id>',methods=['GET'])
+def create_seller(id):
+    if session:
+           if session['user']['status'] == 'admin':
+                user = User.objects(id=id).first()
+                user.status = 'seller'
+                user.save()
+                flash(f"{user.username} is now seller.")
+                return redirect(url_for('dashboard.home'))
+
+
+@dashboard_bp.route('/user/delete/<id>')
+def delete_user(id):
+
+    # get user by id
+    user = User.objects(id=id).first().delete()
+    flash(f"{user.username} is deleted successfully")
+    return redirect(url_for('dashboard.home'))
+
+    # render 'profile.html' blueprint with user

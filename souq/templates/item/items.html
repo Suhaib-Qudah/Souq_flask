@@ -17,6 +17,18 @@
     <a class="btn btn-success rounded-0" href="{{url_for('item.add_item')}}">Add item</a>
     {%endif%}
     {%endif%}
+    <form class="form-inline"  method="POST">
+      <div class="form-group ml-5 w-50">
+        {{form.categories(class='form-control')}}
+      </div>
+      {{form.submit(class="btn btn-primary ml-3")}}
+    </form>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-sm-6 mx-auto">
+      
+    </div>
   </div>
 
 <div class="row px-5">
@@ -27,6 +39,11 @@
     <!-- item card -->
     <div class="card bg-light mb-3">
 
+        {% if item.image %}
+        <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/'+item.image)}}" alt="Card image cap">
+        {%else%}
+        <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/defaultproduct.jpg')}}" alt="Card image cap">
+        {% endif %}
       <!-- card header -->
       <div class="card-header">
         <h5 class="card-title">{{ item['title'] }}</h5>

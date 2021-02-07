@@ -100,15 +100,7 @@ def view_user(id):
     return render_template('user/view.html', user=user , items = items)
 
 
-@user_bp.route('/user/delete/<id>')
-def delete_user(id):
 
-    # get user by id
-    User.objects(id=id).first().delete()
-    session.clear()
-
-    # render 'profile.html' blueprint with user
-    return redirect(url_for('login.logout'))
 
 @user_bp.route('/my-card')
 def card():

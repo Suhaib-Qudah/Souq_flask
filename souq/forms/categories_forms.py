@@ -9,3 +9,11 @@ class AddCategory(FlaskForm):
     description = TextAreaField("Description: ")
     status = SelectField("Status: ", validators=[DataRequired()],choices=status_choices)
     submit = SubmitField("Add New Category")
+
+
+
+class CategoryFilters(FlaskForm):
+    categories = SelectField("Category Name: ")
+    submit = SubmitField("Search Now")
+
+

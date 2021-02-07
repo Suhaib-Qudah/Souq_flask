@@ -19,8 +19,8 @@ class User(Document):
     biography = StringField(max_length=250)
     created_at = DateTimeField(default=datetime.utcnow)
 
-    def get_by_username(cls, username):
-        data = User.objects.get(username= username)
+    def get_by_username(cls, id):
+        data = User.objects(id =id)
         if data is not None:
             return data
     

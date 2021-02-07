@@ -81,6 +81,9 @@
                     <li class="nav-item">
                           <a class="nav-link" href="{{url_for('item.add_item')}}"><i class="fa fa-list text-muted mr-3"></i>Add item</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('item.pending')}}"><i class="fas fa-history text-muted mr-3"></i>Pending</a>
+            </li>
                   {%endif%}
                         {%endif%}
 
@@ -89,28 +92,12 @@
                   <li class="nav-item">
                       <a href="{{url_for('dashboard.categories')}}" class="nav-link"><i class="fas fa-book text-muted mr-3"></i>Add New Category</a>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{url_for('dashboard.users')}}" class="nav-link"><i class="fas fa-users text-muted mr-3"></i>Active users</a>
+                </li>
                   {% endif %}
                   {% endif %}
-                  <li class="nav-item">
-                      <a href="" class="nav-link"><i class="fa fa-desktop text-muted mr-3"></i>UI Elements</a>
-                  </li>
-                </ul>
-                <h6 class="text-muted pl-3 pt-3">
-                    Forms and tables 
-                </h6>
-                <ul class="navbar-nav flex-column">
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="" class="nav-link"><i class="fa fa-list text-muted mr-3"></i>App</a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="" class="nav-link"><i class="fa fa-envelope text-muted mr-3"></i>Mailbox</a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="" class="nav-link"><i class="fa fa-desktop text-muted mr-3"></i>UI Elements</a>
-                  </li>
+        
                 </ul>
             </nav>
       <!-- Sidebar End -->
