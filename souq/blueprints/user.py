@@ -1,3 +1,4 @@
+from souq.models.notification import Notification
 from flask import Flask,Blueprint, render_template, request, redirect, session, flash, url_for
 from souq.models import User, Card, TextItem,Item
 # from souq.models import TextUser
@@ -5,6 +6,8 @@ from souq.forms import *
 from flask_hashing import Hashing
 from werkzeug.utils import *
 import os
+from datetime import datetime
+
 
 
 app = Flask(__name__)
@@ -133,3 +136,20 @@ def change_password():
 
 
     return render_template("user/changepassword.html", form=change_password_form)
+
+
+@user_bp.route('/user/notification/<id>')
+def notification(id):
+    if session.get("user") and session['Notification'] == True:
+        notifications  = Notification.objects(seen=False,to = str(session['user']['id']))
+        for notification in notifications:
+            notification.seen = True
+            notification.seen_at = datetime.now()
+            notification.save()
+        session['Notification']=False
+    # get user favorite items 
+        return render_template('user/notification.html', messages =notifications)
+    else:
+        notifications = []
+        return render_template('user/notification.html', messages =notifications)
+

@@ -19,34 +19,49 @@
       <nav class="navbar navbar-expand-md">
           <div class="container-fluid">
               <!-- brand -->
-              <a href="#" class="navbar-brand text-uppercase">
+              <a href class="navbar-brand text-uppercase">
                   <h1>Admin DashBoard</h1>
               </a>
               <!-- Collapse button -->
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
+                <i class="fas fa-ellipsis-v text-white"></i>         
+                   </button>
               <!-- Collapse Div Links -->
               <div class="collapse navbar-collapse justify-content-end" id="myNavbar">
                   <ul class="navbar-nav links d-md-none">
-                      <li class="nav-item">
-                          <a href="" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa fa-list text-muted mr-3"></i>App</a>
-                    </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa fa-envelope text-muted mr-3"></i>Mailbox</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa fa-desktop text-muted mr-3"></i>UI Elements</a>
-                    </li>
+                      <a href="{{url_for('dashboard.home')}}" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
+                  </li>
+                  {% if session['user']%}
+                       {% if session['user']['status']=='seller' or session['user']['status']=='admin' %}
+                  <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('item.add_item')}}"><i class="fa fa-list text-muted mr-3"></i>Add item</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('item.pending')}}"><i class="fas fa-history text-muted mr-3"></i>Pending</a>
+          </li>
+                {%endif%}
+                      {%endif%}
+
+                      {% if session['user']%}
+                      {% if  session['user']['status']=='admin' %}
+                <li class="nav-item">
+                    <a href="{{url_for('dashboard.categories')}}" class="nav-link"><i class="fas fa-book text-muted mr-3"></i>Add New Category</a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{url_for('dashboard.users')}}" class="nav-link"><i class="fas fa-users text-muted mr-3"></i>Active users</a>
+              </li>
+                {% endif %}
+                {% endif %}
+                <li class="nav-item">
+                  <a href="{{url_for('login.logout')}}" class="nav-link" data-toggle="modal" data-target="#sign-out"><i class="fa fa-sign-out-alt mr-3 text-muted"></i><span class="d-lg-inline d-md-none"> Sign Out</span></a>
+              </li>
                   </ul>
-                  <ul class="navbar-nav icons">
+                  <ul class="navbar-nav icons d-lg-flex d-md-flex d-none">
+                    <li class="nav-item mr-4"><a href="{{url_for('item.index')}}" class="nav-link"><i class="fas fa-home"></i></a></li>
                       <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-search"></i></a></li>
-                      <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-bell icon"></i></a></li>
-                      <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-comment icon"></i></a></li>
-                      <li class="nav-item mr-5"><a href="#" class="nav-link">
+                      <li class="nav-item mr-4"><a href="{{url_for('user.notification',id=session['user']['id'])}}" class="nav-link"><i class="{{ 'fa fa-bell' if session['notification'] == True else 'fa fa-bell icon' }}"></i></a></li>
+                      <li class="nav-item mr-5"><a href="{{url_for('user.view_user',id=session['user']['id'])}}" class="nav-link">
                           <img src="{{url_for('static',filename='photos/default_avatar.png')}}" alt="profile image" width="30px" class="img-fluid rounded-circle img-thumbnail">
                       </a></li>
                       <li class="nav-item mr-4">
@@ -63,7 +78,7 @@
         <div class="row">
       <!-- Sidebar Start -->
             <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar right-padding max-view py-5">
-                <a href="#" class="navbar-brand mb-5 border-0 text-center">
+                <a href="{{url_for('user.view_user',id=session['user']['id'])}}" class="navbar-brand mb-5 border-0 text-center">
                     {% if session['user']['profile'] %}
                     <img src="{{url_for('static',filename='photos/'+session['user']['profile'])}}" alt="profile image" style="width: 100px !important; height: 100px !important; "class="img-fluid rounded-circle">
                     {%else%}

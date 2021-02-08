@@ -1,7 +1,7 @@
 from flask import Flask,Blueprint, render_template,request ,redirect,session,flash
 from flask.helpers import url_for
 from souq.forms import LoginForm
-from souq.models import User
+from souq.models import User, Notification
 from flask_hashing import Hashing
 
 
@@ -29,6 +29,13 @@ def login():
         if user is not None:
             if (user.username == username) and (user.password == password):
               session['user'] = user.serialize()
+              notification  = Notification.objects(seen=False,to=str(session['user']['id']))
+              if notification:
+                  session["Notification"] = True
+              else:
+                  session["Notification"] = False
+
+
             # redirect the user after login
               return redirect(url_for('item.index'))
             else:

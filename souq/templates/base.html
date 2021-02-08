@@ -43,7 +43,8 @@
 <!-- Left sidebar -->
       <div class="ml-auto mr-5">
         <ul class="navbar-nav">
-          {%if session['user'] %}
+          {%if session.get('user') %}
+          <li class="nav-item mr-4"><a href="{{url_for('user.notification',id=session['user']['id'])}}" class="nav-link"><i class="{{ 'fa fa-bell text-white' if session['Notification'] == False else 'fa fa-bell icon text-white' }}"></i></a></li>
            <li class="nav-item dropdown mr-5">
 
             <a class="nav-link dropdown-toggle text-white mr-5" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,9 +105,38 @@
       {%endblock%}
     </section>
   </main>
+  <section class="my-3 text-center">
+      <div class="container bg-blue p-5 rounded">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 px-3">
+            <div class="card bg-white">
+              <div class="card-body">
+                <h5 class="orange">Choose You Favorite Product</h5>
+                <img src="{{url_for('static', filename='/site/ecommerce_choose_item-512.png')}}" class="mt-2 card-img-bottom" alt="image">
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 px-3">
+          <div class="card bg-white">
+            <div class="card-body">
+              <h5 class="orange">Add It To Your Card</h5>
+            <img src="{{url_for('static', filename='/site/shop-pict-basket_add.png')}}" class="mt-2 card-img-bottom" alt="image">
+          </div>
+          </div>
+      </div>
+      <div class="col-lg-4 col-md-12 px-3">
+        <div class="card bg-white">
+<div class="card-body">
+  <h5 class="orange">Buy It By One Click</h5>
+  <img src="{{url_for('static', filename='/site/x-29-512.webp')}}" class=" mt-2 card-img-bottom" alt="image">
+</div>        </div>
+    </div>
+      </div>
+      </div>
+  </section>
 
   <!-- footer -->
-  <footer class="container-fluid bg-dark pt-5">
+  <footer class="container-fluid bg-blue pt-5">
     <!-- add footer here -->
     <div class="container">
       <div class="row">

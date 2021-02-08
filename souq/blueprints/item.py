@@ -181,6 +181,11 @@ def buy():
                     card_item.status = "Pending"
                       # Get item in item collection to check the card
                     card_item.save()
+                    notification = Notification(
+                    notification = (f"{card_item.user.username} want to buy {card_item.item_name}, please make sure you accept or denied the transaction."),
+                    to = str(card_item.store_name)
+                         )
+                    notification.save()
 
         
                 return render_template('user/thanks.html')
@@ -212,6 +217,11 @@ def accept_item(id):
     item = Item.objects(id = card.item_id).first()
     item.quantity -=1
     item.save()
+    notification = Notification(
+        notification = (f"{item.store_name.username} accepted your order, they will contact you soon"),
+        to = str(card.user.id)
+    )
+    notification.save()
     flash("Item Accepted successfully ")
     # render the view
     return redirect(url_for('item.pending'))

@@ -56,14 +56,17 @@ def categories():
 def users():
 
    if session:
-       if session['user']['status'] == 'admin':
+       if session.get("user") and session['user']['status'] == 'admin' :
             # get all users
                 users = User.objects()
                 # render 'list.html' blueprint with users
                 return render_template('user/list.html', users=users)
        else:
             flash("Sorry, You are not authorize to go to this page")
-            return redirect(url_for('dashboard.home'))
+            return redirect(url_for('item.index'))
+   else:
+            flash("Sorry, You are not authorize to go to this page")
+            return redirect(url_for('item.index'))
 
 
 
