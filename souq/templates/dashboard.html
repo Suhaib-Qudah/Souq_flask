@@ -60,7 +60,7 @@
                   <ul class="navbar-nav icons d-lg-flex d-md-flex d-none">
                     <li class="nav-item mr-4"><a href="{{url_for('item.index')}}" class="nav-link"><i class="fas fa-home"></i></a></li>
                       <li class="nav-item mr-4"><a href="#" class="nav-link"><i class="fa fa-search"></i></a></li>
-                      <li class="nav-item mr-4"><a href="{{url_for('user.notification',id=session['user']['id'])}}" class="nav-link"><i class="{{ 'fa fa-bell' if session['notification'] == True else 'fa fa-bell icon' }}"></i></a></li>
+                      <li class="nav-item mr-4"><a href="{{url_for('user.notification',id=session['user']['id'])}}" class="nav-link"><i class="{{ 'fa fa-bell text-white' if session['Notification'] == False else 'fa fa-bell icon text-white' }}"></i></a></li>
                       <li class="nav-item mr-5"><a href="{{url_for('user.view_user',id=session['user']['id'])}}" class="nav-link">
                           <img src="{{url_for('static',filename='photos/default_avatar.png')}}" alt="profile image" width="30px" class="img-fluid rounded-circle img-thumbnail">
                       </a></li>
@@ -91,8 +91,11 @@
                     <li class="nav-item">
                         <a href="{{url_for('dashboard.home')}}" class="nav-link"><i class="fa fa-home text-muted mr-3"></i>Dashboard</a>
                     </li>
-                    {% if session['user']%}
+                    {% if session.get('user') %}
                          {% if session['user']['status']=='seller' or session['user']['status']=='admin' %}
+                         <li class="nav-item">
+                          <a class="nav-link" href="{{url_for('dashboard.view_my_items')}}"><i class="fas fa-chalkboard-teacher text-muted mr-3"></i>My Items</a>
+                  </li>
                     <li class="nav-item">
                           <a class="nav-link" href="{{url_for('item.add_item')}}"><i class="fa fa-list text-muted mr-3"></i>Add item</a>
                   </li>

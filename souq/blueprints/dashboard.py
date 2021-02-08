@@ -2,6 +2,7 @@ from itertools import count
 from flask import Blueprint, render_template, session, redirect, url_for,flash
 from souq.forms import AddCategory
 from souq.models import *
+from mongoengine.queryset.visitor import Q
 
 # define our blueprint
 dashboard_bp = Blueprint('dashboard', __name__)
@@ -11,13 +12,14 @@ dashboard_bp = Blueprint('dashboard', __name__)
 @dashboard_bp.route('/dashboard')
 def home():
     # check if session is set to avoid errors
-    if session:
+    if session.get('user'):
         if  session['user']['status'] == 'seller' or session['user']['status'] == 'admin' :
     # render 'dashboard' blueprint with items
             number_of_users = User.objects.count()
             number_of_user_items = Item.objects(store_name = session['user']['id']).count()
-            return render_template('dashboard/home.html',
-            users=number_of_users , items = number_of_user_items)
+            number_of_user_notification = Notification.objects(seen=False,to = str(session['user']['id']) ).count()
+            pendings = Card.objects(store_name = str(session['user']['id']),status='Pending').count()
+            return render_template('dashboard/home.html', users=number_of_users , items = number_of_user_items, messages = number_of_user_notification,pendings=pendings)
         else:
              return redirect(url_for('item.index'))
     else: 
@@ -85,8 +87,16 @@ def create_seller(id):
 def delete_user(id):
 
     # get user by id
-    user = User.objects(id=id).first().delete()
+    user = User.objects(id=id).first()
     flash(f"{user.username} is deleted successfully")
+    user.delete()
     return redirect(url_for('dashboard.home'))
 
     # render 'profile.html' blueprint with user
+
+@dashboard_bp.route('/dashboard/your-items/')
+def view_my_items():
+    # get items of the user
+    items = Item.objects(store_name=session['user']['id'])
+    flash(f"This is Your Items")
+    return render_template('dashboard/items.html', items = items)

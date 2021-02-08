@@ -9,49 +9,55 @@
 <!-- posts header -->
 
 <div class="row mt-5">
-  <div class="col d-flex justify-content-between">
-    <h1>{{item.title}}</h1>
-      
-    
-  </div>
+<div class="container">
+  <div class="col d-flex justify-content-center">
+    {% if item.image %}
+    <img class="img-thumbnail p-4" style="height: 450px ;width: auto;" src="{{url_for('static',filename='images/'+item.image)}}" alt="Card image cap">
+    {%else%}
+    <img class="img-thumbnail p-4" style="height: 450px ;width: auto;" src="{{url_for('static',filename='images/defaultproduct.jpg')}}" alt="Card image cap">
+    {% endif %}  </div>
+</div>
 </div>
 <div class="row">
-  <div class="col-md-12 mr-auto my-5">
-   <div class="row">
-     <div class="col">
-      <p>{{item.content}}</p>
-      <div>
-          {% for tag in item.tags%}
-            <span class="badge bg-info p-2 text-white">{{tag}}</span>
-          {%endfor%}
-      </div>
-     </div>
-   </div>
-   {% if session['user'] %}
-   <div class="row">
-     <div class="col-lg-4 col-md-12">
-      <form method="POST" action="">
-        {{form.hidden_tag()}}
-
-            {{form.body.label(class="col-form-label")}}
-            {{form.body(class="form-control")}}
-        {{form.submit(class="btn btn-primary my-2")}}
-         </form>
-     </div>
-   </div>
-   {% endif %}
-    <div class="row">
-      <div class="col-md-12">
-        {% for comment in item.comments%}
-        <article class="alert alert-info text-white">
-          <p class="text-dark">{{comment.content}}</p>
-          {% if comment.author.id|string == session['user']['id']|string %}
-          <a class="btn btn-danger" href="{{url_for('item.delete_comment', item_id = item.id,content = comment.content)}}">Delete Post</a>
-          {% endif %}
-          </article>
-       {%endfor%}
-      </div>
-    </div>
+  <div class="container my-3">
+    <ul class="list-group">
+      <li class="list-group-item">        <h1>Product Name: {{item.title}}</h1>  </li>
+      <li class="list-group-item">        <h2>Price: {{item.selling_price}}JD</h2>  </li>
+      <li class="list-group-item"><strong>In Stock: {{item.quantity}}</strong></li>
+      <li class="list-group-item">       <p>{{item.content}}</p>  </li>
+      <li class="list-group-item"> {% for tag in item.tags%}
+        <span class="badge bg-info p-2 text-white">{{tag}}</span>
+      {%endfor%}</li>
+      <li class="list-group-item">    {% if session.get('user') %}
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+           <form method="POST" action="">
+             {{form.hidden_tag()}}
+     
+                 <div class="form-group">
+                 {{form.body.label(class="col-form-label")}}
+                 {{form.body(class="form-control")}}
+                   <small id="helpId" class="text-muted">Give us your review about this product</small>
+                 </div>
+             {{form.submit(class="btn btn-primary my-2")}}
+              </form>
+          </div>
+        </div>
+        {% endif %}</li>
+        <li class="list-group-item">
+          <h4>Comments: </h4>
+          {% for comment in item.comments%}
+          <article class="alert alert-info text-white">
+            <p class="text-dark">{{comment.content}}</p>
+            {% if comment.author.id|string == session['user']['id']|string %}
+            <a class="btn btn-danger" href="{{url_for('item.delete_comment', item_id = item.id,content = comment.content)}}">Delete Post</a>
+            {% endif %}
+            </article>
+         {%endfor%}
+        </li>
+    </ul>
   </div>
 </div>
+
+
 {% endblock %}

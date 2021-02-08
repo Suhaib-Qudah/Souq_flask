@@ -1,9 +1,17 @@
 {% extends 'dashboard.html' %}
 {%block main%}
-
-<div class="row mb-5">
+<div class="row my-3">
     <div class="col">
-        <h3><span class="text-dark text-uppercase">Dashboard/</span><span class="text-muted small"> My Dashboard</span></h3>
+        <div class="jumbotron jumbotron-fluid bg-blue">
+            <div class="container">
+                <h1 class="display-3 orange">Dashboard / Main</h1>
+                <p class="lead text-white">You Can Control You Store From Here</p>
+                <hr class="my-2">
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="{{url_for('item.add_item')}}" role="button">Add New Product</a>
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row mt-2 inform-card">
@@ -23,7 +31,7 @@
             <!-- End of card body -->
             <!-- Card footer -->
             <div class="card-footer d-flex justify-content-between">
-                <a href="#" class="text-white">Read More</a>
+                <a href="{{url_for('dashboard.view_my_items')}}" class="text-white">Read More</a>
                 <i class="fa fa-sync mt-2"></i>
             </div>
             <!-- End of card footer -->
@@ -64,7 +72,7 @@
                 <div class="flex d-flex justify-content-between">
                     <i class="fa fa-envelope body-icon"></i>
                     <div class="side-text align-content-between">
-                        <h3>200 News</h3>
+                        <h3>{{messages}}</h3>
                         <h5>Mails</h5>
                     </div>
                 </div>
@@ -72,7 +80,7 @@
             <!-- End of card body -->
             <!-- Card footer -->
             <div class="card-footer d-flex justify-content-between">
-                <a href="#" class="text-white">Read More</a>
+                <a href="{{url_for('user.notification',id=session['user']['id'])}}" class="text-white">Read More</a>
                 <i class="fa fa-sync mt-2"></i>
             </div>
             <!-- End of card footer -->
@@ -89,7 +97,7 @@
                 <div class="flex d-flex justify-content-between">
                     <i class="fa fa-suitcase body-icon"></i>
                     <div class="side-text align-content-between">
-                        <h3>200 News</h3>
+                        <h3>{{pendings}}</h3>
                         <h5>Orders</h5>
                     </div>
                 </div>
@@ -97,7 +105,7 @@
             <!-- End of card body -->
             <!-- Card footer -->
             <div class="card-footer d-flex justify-content-between">
-                <a href="#" class="text-white">Read More</a>
+                <a href="{{url_for('item.pending')}}" class="text-white">Read More</a>
                 <i class="fa fa-sync mt-2"></i>
             </div>
             <!-- End of card footer -->
@@ -107,5 +115,6 @@
 
 
 </div>
+
 
 {%endblock%}

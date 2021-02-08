@@ -81,27 +81,47 @@ def add_item():
 def edit_item(item_id):
 
     # Find our item
-    item = TextItem.objects(id=item_id).first()
+    item = Item.objects(id=item_id).first()
 
     # create instance of our form
-    edit_item_form = EdititemForm()
-
+    edit_item_form = EditItemForm()
+     # handle form submission
+    categories = Category.objects( status = 'active' )
+    choices = []
+    for category in categories:       
+        choices.append(category.name)
+    edit_item_form.categories.choices = choices
     if request.method == 'GET':
         edit_item_form.title.data = item.title
-        edit_item_form.content.data = item.content
+        edit_item_form.body.data = item.content
+        edit_item_form.title.data = item.title
+        edit_item_form.body.data =item.content 
+        edit_item_form.price.data = item.price 
+        edit_item_form.quantity.data = item.quantity 
+        edit_item_form.selling_price.data = item.selling_price 
+        edit_item_form.categories.data = item.category 
 
+   
     # handle form submission
     if edit_item_form.validate_on_submit():
-
+        # create instance of Textitem
+        if edit_item_form.image.data:
+            image = edit_item_form.image.data
+            print(image)
+            filename = secure_filename( session['user']['username']+edit_item_form.title.data+image.filename )
+            path = image.save(os.path.join(
+            app.config['media_path'], 'images', filename))
+            print(path)
+            item.image = filename
         # read item values from the form
-        title = edit_item_form.title.data
-        content = edit_item_form.content.data
 
-        # Update our item title and content
-        item.title = title
-        item.content = content
-
-        # save our changes to the DB
+        item.title = edit_item_form.title.data
+        item.content = edit_item_form.body.data
+        item.price = edit_item_form.price.data
+        item.quantity = edit_item_form.quantity.data
+        item.selling_price = edit_item_form.selling_price.data
+        item.category= edit_item_form.categories.data
+        item.tags = ["flask", "python", "mongo"]
         item.save()
 
         # render the template

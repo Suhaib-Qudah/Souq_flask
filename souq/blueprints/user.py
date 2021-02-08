@@ -83,6 +83,8 @@ def edit_user(id):
         user.biography=biography
         # save our changes to the DB
         user.save()
+        user=User.objects(id=session['user']['id']).first()
+        session['user'] = user.serialize()
          # render the template
         return redirect(url_for('user.view_user' , id=session['user']['id']))
 

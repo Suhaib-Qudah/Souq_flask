@@ -1,0 +1,55 @@
+{% extends 'dashboard.html' %}
+<!-- title -->
+{% block title %}Flask Souq - items{% endblock %}
+
+
+<!-- content block -->
+{% block main %}
+
+<!-- items header -->
+<h1 class="text-justify border-bottom pb-2 px-5">Latest Item to Choose</h1>
+<div class="d-flex justify-content-between mb-3 px-5">
+    <h3>
+      Dashboard / My Items
+    </h3>
+   
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-sm-6 mx-auto">
+      
+    </div>
+  </div>
+
+<div class="row px-5">
+
+  {% for item in items %}
+  <div class="col-lg-3 col-md-6 col-sm-12">
+
+    <!-- item card -->
+    <div class="card bg-light mb-3">
+
+        {% if item.image %}
+        <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/'+item.image)}}" alt="Card image cap">
+        {%else%}
+        <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/defaultproduct.jpg')}}" alt="Card image cap">
+        {% endif %}
+      <!-- card header -->
+      <div class="card-header">
+        <h5 class="card-title">{{ item.title }}</h5>
+       <h6 class="card-subtitle mb-2 text-muted"> Selling Price : {{ item.selling_price}}$</h6>
+      </div>
+
+      <!-- card body -->
+      <div class="card-body">
+        <p class="card-text">{{ item['content']|truncate(40, True) }}</p>
+        <p class="card-text">{{ item['created'] }}</p>
+
+        <a href="{{url_for('item.view_item', item_id = item.id)}}" class="card-link">View item</a>
+        <a href="{{url_for('item.edit_item', item_id = item.id)}}" class="btn btn-primary d-block w-100 rounded-0 mt-5"><i class="fas fa-edit mr-3"></i>Edit Item</a>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+{% endblock %}
