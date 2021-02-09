@@ -12,6 +12,11 @@
     </div>
 </div>
 <div class="row">
+    <div class="col">
+        <a href="{{url_for('user.all_notification')}}" class="btn btn-secondary mb-5">Show All Notification</a>
+    </div>
+</div>
+<div class="row">
   {% if messages%}
   {% for notification in messages %}
   <div class="col-md-12">

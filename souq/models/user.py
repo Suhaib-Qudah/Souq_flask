@@ -23,7 +23,12 @@ class User(Document):
         data = User.objects(id =id)
         if data is not None:
             return data
-    
+
+    def get_admin(cls):
+        data = User.objects(username ='Admin').first()
+        if data is not None:
+            return data.id
+
     def change_password(self, current_password, new_password):
         if current_password == self.password:
             self.password = (new_password)

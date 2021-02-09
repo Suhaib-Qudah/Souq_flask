@@ -46,6 +46,8 @@ def categories():
                 new_category = Category(name=name, description=description, status=status)
                 # add category to item comments
                 new_category.save()
+                flash('New Categories Added Successfully')
+                return redirect(url_for('dashboard.categories'))
 
     # render 'dashboard' blueprint with items
         return render_template('dashboard/add_categories.html', form= form)

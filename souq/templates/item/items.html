@@ -24,6 +24,17 @@
       {{form.submit(class="btn btn-primary ml-3")}}
     </form>
   </div>
+  {% if session.get('user')  %}
+  {% if session['user']['status']!='admin' and session['user']['status']!='seller'%}
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-between mb-3 px-5">
+        <a class="btn btn-primary rounded-0" href="{{url_for('item.store')}}">Covert To Store</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
 
   <div class="row mb-3">
     <div class="col-sm-6 mx-auto">
@@ -40,18 +51,20 @@
     <div class="card bg-light mb-3">
 
         {% if item.image %}
-        <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/'+item.image)}}" alt="Card image cap">
+        <img class="card-img-top px-5 py-3" style="height: 250px ;width: auto i !important;" src="{{url_for('static',filename='images/'+item.image)}}" alt="Card image cap">
         {%else%}
-        <img class="card-img-top" style="height: 250px" src="{{url_for('static',filename='images/defaultproduct.jpg')}}" alt="Card image cap">
+        <img class="card-img-top px-5 py-3" style="height: 250px; width: auto !important;" src="{{url_for('static',filename='images/defaultproduct.jpg')}}" alt="Card image cap">
         {% endif %}
       <!-- card header -->
       <div class="card-header">
         <h5 class="card-title">{{ item['title'] }}</h5>
-       <a href='{{url_for("user.view_user", id=item.store_name.id)}}'> <h6 class="card-subtitle mb-2 text-muted"> Store Name : {{ item.store_name.first_name | title}} {{ item.store_name.last_name | title}}</h6></a>
+       <h6 class="card-subtitle mb-2 text-muted"> Store Name : {{ item.store_name.first_name | title}} {{ item.store_name.last_name | title}}</h6>
       </div>
 
       <!-- card body -->
       <div class="card-body">
+        <h2>Price: {{item.selling_price}}JD</h2>
+        <p><strong>In Stock: {{item.quantity}}</strong></p>
         <p class="card-text">{{ item['content']|truncate(40, True) }}</p>
         <p class="card-text">{{ item['created'] }}</p>
 

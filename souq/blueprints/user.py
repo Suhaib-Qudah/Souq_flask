@@ -22,6 +22,10 @@ def register():
     # handle form submission
     if register.validate_on_submit():
         # create user object
+        check_user = User.objects(username = register.username.data).first()
+        if check_user is not None:
+            flash("Sorry This username is already taken")
+            return redirect(url_for('user.register'))
         user = User()
         # set object attributes and create new user in database
         if register.image.data:
@@ -142,15 +146,33 @@ def change_password():
 
 @user_bp.route('/user/notification/<id>')
 def notification(id):
-    if session.get("user") and session['Notification'] == True:
+    if session.get("user"):
         notifications  = Notification.objects(seen=False,to = str(session['user']['id']))
+        data = notifications
+        for notification in notifications:
+            notification.seen_at = datetime.now()
+            notification.save()
+        session['Notification']=False
+    # get user favorite items 
+        return render_template('user/notification.html', messages = data)
+    else:
+        notifications = []
+        return render_template('user/notification.html', messages =notifications)
+
+
+
+@user_bp.route('/user/all-notification')
+def all_notification():
+    if session.get("user"):
+        notifications  = Notification.objects(to = str(session['user']['id'])).order_by('-created_at')
+        data = notifications
         for notification in notifications:
             notification.seen = True
             notification.seen_at = datetime.now()
             notification.save()
         session['Notification']=False
     # get user favorite items 
-        return render_template('user/notification.html', messages =notifications)
+        return render_template('user/notification.html', messages = data)
     else:
         notifications = []
         return render_template('user/notification.html', messages =notifications)

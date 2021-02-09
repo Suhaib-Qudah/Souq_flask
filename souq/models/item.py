@@ -17,6 +17,7 @@ class Item(Document):
     created_at = DateTimeField(default=datetime.now())
     price = FloatField(required = True)
     quantity= IntField(required = True)
+    views = IntField(default=0)
     selling_price = FloatField(required = True)
     category = StringField()
 

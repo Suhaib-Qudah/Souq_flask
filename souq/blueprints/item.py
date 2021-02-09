@@ -38,6 +38,27 @@ def index():
     return render_template('item/items.html', items=items, title='Leatest items',form=form)
 
 
+@item_bp.route('/most-viewed', methods=['post','get'])
+def most_viewed():
+    form = CategoryFilters()
+    categories = Category.objects( status = 'active' )
+    choices = []
+    for category in categories:       
+        choices.append(category.name)
+    form.categories.choices = choices
+    #to do when user try to filter by category 
+    if request.method == "POST" and form.validate:
+            items = Item.objects( category = form.categories.data).order_by('-views')
+            message= (f'{items.count()} items were found in our store')
+            flash(message)
+            return render_template('item/items.html', items=items, title='Latest items',form=form)
+
+    # get all items
+    items = TextItem.objects().order_by('-views')
+    # render 'souq' blueprint with items
+    return render_template('item/items.html', items=items, title='Leatest items',form=form)
+
+
 @item_bp.route('/item/add', methods=['GET', 'POST'])
 def add_item():
     # create instance of our form
@@ -134,6 +155,8 @@ def edit_item(item_id):
 @item_bp.route('/item/<item_id>',methods=['POST','GET'])
 def view_item(item_id):
     item = TextItem.objects(id=item_id).first()
+    item.views+=1;
+    item.save() 
     # create instance of our form
     add_comment_form = AddCommentForm()
     # handle form submission
@@ -245,3 +268,16 @@ def accept_item(id):
     flash("Item Accepted successfully ")
     # render the view
     return redirect(url_for('item.pending'))
+
+
+
+@item_bp.route('/store')
+def store():
+    notification = Notification(
+        notification = (f"{session['user']['username']} Ask to be a store"),
+        to = str(User.get_admin(User))
+    )
+    notification.save()
+    flash("You Resquest Send Successfully. We will contact you soon.\n Thank you to trust us.")
+    # render the view
+    return redirect(url_for('item.index'))
